@@ -30,17 +30,50 @@
   <link rel="icon" type="image/png" href="favicon.png"/>
 
   <title>miniapp</title>
+  
   <link rel="manifest" href="manifest.json">
-</head>
-<body>
-  <!--
-    You can customize the "flutter_bootstrap.js" script.
-    This is useful to provide a custom configuration to the Flutter loader
-    or to give the user feedback during the initialization process.
 
-    For more details:
-    * https://docs.flutter.dev/platform-integration/web/initialization
-  -->
-  <script src="flutter_bootstrap.js" async></script>
-</body>
-</html>
+      <style>
+        html, body {
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          height: 100%;
+          overflow: hidden; /* Prevents browser-level bouncing */
+          overscroll-behavior: none; /* Stops swipe-to-close behavior */
+          position: fixed; /* Freezes the window layer */
+        }
+
+        /* Targets the Flutter web host element specifically */
+        flutter-view {
+          overscroll-behavior: none !important;
+        }
+      </style>
+    </head>
+
+
+
+
+    <body>
+    <script src="flutter_bootstrap.js" async></script>
+    <script src="https://telegram.org/js/telegram-web-app.js?57"></script>
+
+    <script>
+      function initTelegram() {
+        if (window.Telegram && window.Telegram.WebApp) {
+          window.Telegram.WebApp.ready();
+          window.Telegram.WebApp.expand(); // Forces full-screen mode immediately
+
+          // Optional: Disables the vertical swipe-to-close gesture entirely if supported by Telegram client
+          if (window.Telegram.WebApp.isVerticalSwipesEnabled === true) {
+            window.Telegram.WebApp.disableVerticalSwipes();
+          }
+        }
+      }
+
+      // Run immediately and also on fallback load event
+      initTelegram();
+      window.addEventListener('load', initTelegram);
+    </script>
+    </body>
+    </html>
